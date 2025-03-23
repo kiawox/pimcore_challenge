@@ -1,0 +1,11 @@
+<h1>Fußballvereine</h1>
+<ul>
+    {% for club in clubs %}
+        <li>
+            <a href="{{ path('club_detail', { slug: club.getId() }) }}">
+                {# <img src="{{ club.fc_logo|pimcore_image_thumbnail({width: 50, height: 50}) }}" alt="{{ club.name }}"> #}
+                {{ club.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

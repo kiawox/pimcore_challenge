@@ -4,3 +4,11 @@ _pimcore:
 app:
     resource: "../src/Controller/"
     type: annotation
+
+club_list:
+    path: '/club'
+    controller: 'App\Controller\ClubController::listAction'
+
+club_detail:
+    path: '/club/{slug}'
+    controller: 'App\Controller\ClubController::detailAction'

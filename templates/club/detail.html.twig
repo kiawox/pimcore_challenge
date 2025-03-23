@@ -1,0 +1,7 @@
+<h1>{{ club.name }}</h1>
+<img src="{{ club.fc_logo|pimcore_image({width: 200}) }}" alt="{{ club.name }}">
+<p><strong>Location</strong> {{ club.location }}</p>
+<p><strong>Gegründet:</strong> {{ club.year_established }}</p>
+{# <p>{{ club.description|raw }}</p> #}
+<a href="{{ club.website }}" target="_blank">Official Website</a>
+<a href="{{ path('club_list') }}">Back to the fancy list</a>
