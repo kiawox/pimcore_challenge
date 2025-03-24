@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Example</title>
-</head>
+{% extends 'web2print/layout.html.twig' %}
 
-<body>
+{% block content %}
+
 
 <style type="text/css">
     body {
@@ -97,16 +93,15 @@
         margin: 0;
     }
 
-</style>
+</style> 
 
 
-<div id="site">
+ <div id="site">
     <div id="logo">
         <a href="http://www.pimcore.com/"><img src="/bundles/pimcoreadmin/img/logo-claim-gray.svg" alt="Logo claim grey" style="width: 400px;" /></a>
         <hr />
     </div>
     <a href="{{ path('club_list') }}">Go to the fancy football clubs</a>
-    {# <a href="{{ path('club_list') }}">Zurück zur Liste</a> #}
 
     {% if editmode %}
         <div class="buttons">
@@ -125,5 +120,5 @@
     {% endif %}
 </div>
 
-</body>
-</html>
+{% endblock %}
+

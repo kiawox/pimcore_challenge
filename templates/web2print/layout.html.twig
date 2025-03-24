@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-
-    <style type="text/css">
+    <meta charset="UTF-8">
+    {# <style type="text/css">
 
         @page {
             counter-increment: page;
@@ -17,7 +17,6 @@
         }
 
     </style>
-
     <style type="text/css" media="screen">
         body {
             background:#CCC;
@@ -39,16 +38,40 @@
 
             position: relative;
         }
-    </style>
+    </style> #}
 
-
-    {% if printermarks is defined and printermarks == true %}
+    {# {% if printermarks is defined and printermarks == true %}
         <link rel="stylesheet" type="text/css" href="/bundles/pimcoreadmin/css/print/print-printermarks.css" media="print" />
-    {% endif %}
+    {% endif %} #}
 
 </head>
 
 <body>
+    <header>
+        <nav>
+            {# get root node if there is no document defined (for pages which are routed directly through static route) #}
+            {% if not document is defined or not document %}
+                {% set document = pimcore_document(1) %}
+            {% endif %}
+
+            {# get the document which should be used to start in navigation | default home #}
+            {% set navStartNode = document.getProperty('navigationRoot') %}
+            {% if not navStartNode is instanceof('\\Pimcore\\Model\\Document\\Page') %}
+                {% set navStartNode = pimcore_document(1) %}
+            {% endif %}
+
+            {% set mainNavigation = pimcore_build_nav({
+                active: document,
+                root: navStartNode
+            }) %}
+
+            {# later you can render the navigation #}
+            {{ pimcore_render_nav(mainNavigation, 'menu', 'renderMenu', {
+                maxDepth: 1,
+                ulClass: 'nav navbar-nav'
+            }) }}
+        </nav>
+    </header>
 <div class="site">
     {{ block('content') }}
 </div>
