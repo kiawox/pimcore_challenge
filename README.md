@@ -4,7 +4,7 @@ Mit dieser Applikation kann man selber Fußballvereine und dessen Spieler anlege
 
 Diese Challenge wurde in einer Docker-Umgebung erstellt. Die Schritte unter [Docker](#docker) ausführen und schon kann man das Projekt einsehen und eigene Vereine und Spieler angeben.
 
-## Docker
+## Docker Installation
 ### Wichtig
 
 * Dein User muss die Rechte haben docker-Befehle ausführen zu können (direkt oder mit sudo).
