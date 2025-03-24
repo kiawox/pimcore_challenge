@@ -20,7 +20,7 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'title' => '',
    'description' => '',
    'creationDate' => NULL,
-   'modificationDate' => 1742648515,
+   'modificationDate' => 1742767561,
    'userOwner' => 2,
    'userModification' => 2,
    'parentClass' => '',
@@ -289,9 +289,9 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'deletedDataComponents' => 
   array (
     0 => 
-    \Pimcore\Model\DataObject\ClassDefinition\Data\Input::__set_state(array(
-       'name' => 'fc_website',
-       'title' => 'Fc _website',
+    \Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyObjectRelation::__set_state(array(
+       'name' => 'players',
+       'title' => 'Players',
        'tooltip' => '',
        'mandatory' => false,
        'noteditable' => false,
@@ -300,23 +300,33 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
        'style' => '',
        'permissions' => NULL,
        'fieldtype' => '',
-       'relationType' => false,
+       'relationType' => true,
        'invisible' => false,
        'visibleGridView' => false,
        'visibleSearch' => false,
        'blockedVarsForExport' => 
       array (
       ),
-       'defaultValue' => NULL,
-       'columnLength' => 190,
-       'regex' => '',
-       'regexFlags' => 
+       'classes' => 
+      array (
+        0 => 
+        array (
+          'classes' => 'ClubPlayer',
+        ),
+      ),
+       'displayMode' => 'grid',
+       'pathFormatterClass' => '',
+       'maxItems' => NULL,
+       'visibleFields' => 'name,number,age,position',
+       'allowToCreateNewObject' => false,
+       'allowToClearRelation' => true,
+       'optimizedAdminLoading' => false,
+       'enableTextSelection' => false,
+       'visibleFieldDefinitions' => 
       array (
       ),
-       'unique' => false,
-       'showCharCount' => false,
        'width' => '',
-       'defaultValueGenerator' => '',
+       'height' => '',
     )),
   ),
    'blockedVarsForExport' => 
