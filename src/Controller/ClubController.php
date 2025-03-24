@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Pimcore\Controller\FrontendController;
 use Pimcore\Model\DataObject\FootballClub;
+use Pimcore\Model\DataObject\ClubPlayer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,8 +15,17 @@ class ClubController extends FrontendController
     {
         $clubs = new FootballClub\Listing();
         
+        foreach ($clubs as $club) {
+            $playerCount = (new ClubPlayer\Listing())
+                ->filterByFootballclub($club)
+                ->getTotalCount();
+
+            $playerCounts[$club->getId()] = $playerCount;
+        }
+
         return $this->render('club/list.html.twig', [
-            'clubs' => $clubs
+            'clubs' => $clubs,
+            'playerCounts' => $playerCounts
         ]);
     }
 
@@ -26,8 +36,12 @@ class ClubController extends FrontendController
             throw $this->createNotFoundException("Football club not found");
         }
 
+        $players = new ClubPlayer\Listing();
+        $players->setCondition('footballclub__id = ?', [$club->getId()]);
+
         return $this->render('club/detail.html.twig', [
-            'club' => $club
+            'club' => $club,
+            'players' => $players
         ]);
     }
 

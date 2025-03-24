@@ -1,11 +1,18 @@
+{% extends 'web2print/layout.html.twig' %}
+
+{% block content %}
+
 <h1>Fußballvereine</h1>
 <ul>
     {% for club in clubs %}
         <li>
             <a href="{{ path('club_detail', { slug: club.getId() }) }}">
-                {# <img src="{{ club.fc_logo|pimcore_image_thumbnail({width: 50, height: 50}) }}" alt="{{ club.name }}"> #}
+                <img src="{{ club.fc_logo}}" alt="{{ club.name }}" class="club-logo">
                 {{ club.name }}
             </a>
         </li>
+            <span>Player count: {{ playerCounts[club.id] }}</span>
     {% endfor %}
 </ul>
+
+{% endblock %}

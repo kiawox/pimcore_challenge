@@ -1,7 +1,53 @@
+{%  block content %}
+
 <h1>{{ club.name }}</h1>
-<img src="{{ club.fc_logo|pimcore_image({width: 200}) }}" alt="{{ club.name }}">
+<img src="{{ club.fc_logo.getFullPath()}}" alt="{{ club.name }}" class="club-logo">
 <p><strong>Location</strong> {{ club.location }}</p>
 <p><strong>Gegründet:</strong> {{ club.year_established }}</p>
-{# <p>{{ club.description|raw }}</p> #}
-<a href="{{ club.website }}" target="_blank">Official Website</a>
+
+<a href="{{ club.website }}" target="_blank">Official Website</a>#
+
+{% if club.location %}
+    <div id="map" style="height: 400px;"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var map = L.map('map').setView([{{ club.location.latitude }}, {{ club.location.longitude }}], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([{{ club.location.latitude }}, {{ club.location.longitude }}]).addTo(map)
+                .bindPopup("{{ club.name }}")
+                .openPopup();
+        });
+    </script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+{% endif %}
+
+
+<h2>Spieler</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Nummer</th>
+        <th>Position</th>
+        <th>Alter</th>
+    </tr>
+    {% for player in players %}
+    <tr>
+        <td>{{ player.name }}</td>
+        <td>{{ player.number }}</td>
+        <td>{{ player.position }}</td>
+        <td>{{ player.age }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 <a href="{{ path('club_list') }}">Back to the fancy list</a>
+
+
+{% endblock %}
+
