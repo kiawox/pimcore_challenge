@@ -1,57 +1,52 @@
 # Pimcore Challenge - Football Clubs
 
+Mit dieser Applikation kann man selber Fußballvereine und dessen Spieler anlegen und anzeigen lassen.
+
 Diese Challenge wurde in einer Docker-Umgebung erstellt. Die Schritte unter [Docker](#docker) ausführen und schon kann man das Projekt einsehen und eigene Vereine und Spieler angeben.
 
 ## Docker
-(These instructions are the same as for the pimcore/skeleton installation and have also been adopted here.)
+### Wichtig
 
-You can also use Docker to set up a new Pimcore Installation.
-You don't need to have a PHP environment with composer installed.
+* Dein User muss die Rechte haben docker-Befehle ausführen zu können (direkt oder mit sudo).
+* Du musst docker compose installiert haben.
+* Dein User muss die Rechte haben die Datei-Rechte zu ändern (direkt oder mit sudo).
 
-### Prerequisites
+### Die Schritte zum installieren
 
-* Your user must be allowed to run docker commands (directly or via sudo).
-* You must have docker compose installed.
-* Your user must be allowed to change file permissions (directly or via sudo).
+1. Das Projekt als zip downloaden und entpacken
+   
+2. In das neue entpackte Projekt reingehen. 
+   **Achtung:** Sehr wahscheinlich wird der Projekt-Ordner `pimcore_challenge-main` heißen, solange der Ordner nicht umbenannt worden ist.
+   ```
+   cd pimcore_challenge-main
+   ```
 
-### Follow these steps
+3. Das Projekt initialisieren: 
+   ```
+   docker run -u `id -u`:`id -g` --rm -v `pwd`:/var/www/html pimcore/pimcore:php8.2-latest composer create-project .
+   ``` 
 
-1. Initialize the skeleton project using the `pimcore/pimcore` image
-   ``docker run -u `id -u`:`id -g` --rm -v `pwd`:/var/www/html pimcore/pimcore:php8.3-latest composer create-project pimcore/skeleton my-project``
-2. Go to your new project
-   `cd my-project/`
-3. Part of the new project is a docker compose file
+4. Den Befehl ``echo `id -u`:`id -g`` ausführen um den local user und group id zu erfahren.
+   - Den `docker-compose.yaml` in einen Editor ausführen und falls nötig die user & group id bei `user: '1000:1000'`überschreiben 
+  
+5. Die Services starten mit: 
+   ```
+   docker compose up -d
+   ```
 
-   * Run `sed -i "s|#user: '1000:1000'|user: '$(id -u):$(id -g)'|g" docker-compose.yaml` to set the correct user id and group id.
-   * Start the needed services with `docker compose up -d`
-4. Install pimcore and initialize the DB
-   `docker compose exec php vendor/bin/pimcore-install`
+6. Final dann Pimcore installieren und die Datenbank initialisieren mit:
+   ```
+   docker compose exec php vendor/bin/pimcore-install --mysql-host-socket=db --mysql-username=pimcore --mysql-password=pimcore --mysql-database=pimcore
+   ```
+   Die Namen für den Admin User und Passwort für die Pimcore-Installation kann man frei eingeben.
 
-   * When asked for admin user and password: Choose freely
-   * This can take a while, up to 20 minutes
-   * If you select to install the SimpleBackendSearchBundle please make sure to add the `pimcore_search_backend_message` to your `.docker/supervisord.conf` file inside value for 'command' like `pimcore_maintenance` already is.
-5. Run codeception tests:
+7. Fertig? Dann kannst du Pimcore nun besuchen!
+   Frontend: [http://localhost](http://localhost)
+   Admin Interface: [http://localhost/admin](http://localhost/admin)
+   - Bitte nicht den Admin User-Name und Passwort vergessen!
 
-   * `docker compose run --user=root --rm test-php chown -R $(id -u):$(id -g) var/ public/var/`
-   * `docker compose run --rm test-php vendor/bin/pimcore-install -n`
-   * `docker compose run --rm test-php vendor/bin/codecept run -vv`
-6. ✔️ DONE - You can now visit your pimcore instance:
-
-   * The frontend: [http://localhost](http://localhost)
-   * The admin interface, using the credentials you have chosen above:
-     [http://localhost/admin](http://localhost/admin)
-
-## Pimcore Platform Version
-
-By default, Pimcore Platform Version is added as a dependency which ensures installation of compatible and in combination
-with each other tested versions of additional Pimcore modules. More information about the Platform Version can be found in the
-[Platform Version docs](https://github.com/pimcore/platform-version).
-
-It might be necessary to update a specific Pimcore module to a version that is not included in the Platform Version.
-In that case, you need to remove the `platform-version` dependency from your `composer.json` and update the module to
-the desired version.
-Be aware that this might lead to a theoretically compatible but untested combination of Pimcore modules.
-
-## Other demo/skeleton packages
-
-- [Pimcore Basic Demo](https://github.com/pimcore/demo)
+### Wie lege ich schon die ersten Fußballvereine/Spieler an?
+1. Gehe zu [http://localhost/admin](http://localhost/admin)
+2. Unter Data Objects erstelle jeweils zwei Ordner. `footballclubs` & `players` zum Beispiel.
+3. Mit Rechts-Klick klickst du auf einen der erstellten Ordner aus und erstellst einen neuen Data Object. Z.B. in dem Ordner `footballclubs` wählst du hier den Data Object `footballclub` und benennst ihm nach einem bestimmten Fußballverein.
+4. Danach wählst du den neu erstellten Data Object und vervollständigst die Daten.
