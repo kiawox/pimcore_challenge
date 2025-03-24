@@ -1,40 +1,47 @@
+{% extends 'web2print/layout.html.twig' %}
+
 {%  block content %}
 
 <h1>{{ club.name }}</h1>
-<img src="{{ club.fc_logo.getFullPath()}}" alt="{{ club.name }}" class="club-logo">
-<p><strong>Location</strong> {{ club.location }}</p>
-<p><strong>Gegründet:</strong> {{ club.year_established }}</p>
+<div class="details">
+    <div id="detail-info">
+        <img src="{{ club.fc_logo.getFullPath()}}" alt="{{ club.name }}" class="club-logo">
+        
+        <p><strong>Year established:</strong> {{ club.year_established }}</p>
+        <p><strong>Website: </strong><a href="{{ club.website }}" target="_blank">{{ club.website }} </a></p>
 
-<a href="{{ club.website }}" target="_blank">Official Website</a>#
+    </div>
+    {% if club.location %}
+    <div id="detail-map">
+        <div id="map"></div>
 
-{% if club.location %}
-    <div id="map" style="height: 400px;"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var map = L.map('map').setView([{{ club.location.latitude }}, {{ club.location.longitude }}], 13);
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var map = L.map('map').setView([{{ club.location.latitude }}, {{ club.location.longitude }}], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
+                L.marker([{{ club.location.latitude }}, {{ club.location.longitude }}]).addTo(map)
+                    .bindPopup("{{ club.name }}")
+                    .openPopup();
+            });
+        </script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <span>Location coordinates: {{ club.location }}</span>
+    </div>
+    {% endif %}
+</div>
 
-            L.marker([{{ club.location.latitude }}, {{ club.location.longitude }}]).addTo(map)
-                .bindPopup("{{ club.name }}")
-                .openPopup();
-        });
-    </script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-{% endif %}
-
-
-<h2>Spieler</h2>
+<h2>Players</h2>
 <table>
     <tr>
         <th>Name</th>
-        <th>Nummer</th>
+        <th>Number</th>
         <th>Position</th>
-        <th>Alter</th>
+        <th>Age</th>
     </tr>
     {% for player in players %}
     <tr>

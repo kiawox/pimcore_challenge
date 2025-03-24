@@ -3,16 +3,18 @@
 {% block content %}
 
 <h1>Fußballvereine</h1>
-<ul>
+<div class="club-list">
     {% for club in clubs %}
-        <li>
+        <div class="club">
             <a href="{{ path('club_detail', { slug: club.getId() }) }}">
-                <img src="{{ club.fc_logo}}" alt="{{ club.name }}" class="club-logo">
+                <div class="logo_wrapper">
+                    <img src="{{ club.fc_logo}}" alt="{{ club.name }}" class="club-logo">
+                </div>
                 {{ club.name }}
             </a>
-        </li>
-            <span>Player count: {{ playerCounts[club.id] }}</span>
+            <p>Player count: {{ playerCounts[club.id] }}</p>
+        </div>
     {% endfor %}
-</ul>
+</div>
 
 {% endblock %}
